@@ -118,12 +118,7 @@ for row in dane_input:
 with open('switcher.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     for row in csv_reader:
-        print([row[0], row[1], row[1],'', str(row[2]),'','48', GRUPA_PELNY,'False','True','','','','','',''])
         dane_output.append([int(row[0]), row[1], row[1],'', str(row[2]),'','48', GRUPA_PELNY,'False','True','','','','','',''])
-            
-print(f'Processed {line_count} lines from constant data input')
-print(f'No. of corrent entries {len(dane_input)} lines.')
-   
 
 print(f'No. of pracownicy = {pracownicy - 100}')
 print(f'No. of full access  = {dostep_pelny}')
