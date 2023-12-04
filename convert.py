@@ -6,10 +6,12 @@ import os
 
 
 GRUPA_PELNY = 1
+GRUPA_ROZSZEZONY = 4
 GRUPA_PROWADZACY = 2
 GRUPA_KLUBOWICZ = 3
 GRUPA_BEZDOSTEPU = 250
 dostep_pelny = 0
+dostep_rozszezony = 0
 dostep_prowadzacy = 0
 dostep_klubowicz = 0
 
@@ -33,11 +35,15 @@ def karta(numer):
 
 def grupa(row):
     global dostep_pelny
+    global dostep_rozszezony
     global dostep_prowadzacy
     global dostep_klubowicz
-    if row[1] == 't' and row[2] == 't' and row[3] == 't' and row[4] == 't' or row[5] == 't':
+    if row[5] == 't':
         dostep_pelny += 1
         return GRUPA_PELNY
+    if row[1] == 't' and row[2] == 't' and row[3] == 't' and row[4] == 't':
+        dostep_rozszezony += 1
+        return GRUPA_ROZSZEZONY
     if row[1] == 't' and row[2] == 't' and row[3] == 't' and row[4] == 'f':
         dostep_prowadzacy += 1
         return GRUPA_PROWADZACY
@@ -63,8 +69,8 @@ def numer(row):
 temp = []
 dane_input = []
 dane_output = []
-pracownicy = 10
-prowadzacy = 100
+pracownicy = 100
+prowadzacy = 250
 czlonek = 1000
 user = 1
 
@@ -106,11 +112,22 @@ for row in temp:
     dane_input.remove(row)
 
 for row in dane_input:
-    dane_output.append([numer(row), user, user,'', karta(row[0]),'','48', grupa(row),'False','True','','','','','',''])
+    dane_output.append([numer(row), str(user), str(user),'', karta(row[0]),'','48', grupa(row),'False','True','','','','','',''])
     user += 1
+    
+with open('switcher.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    for row in csv_reader:
+        print([row[0], row[1], row[1],'', str(row[2]),'','48', GRUPA_PELNY,'False','True','','','','','',''])
+        dane_output.append([int(row[0]), row[1], row[1],'', str(row[2]),'','48', GRUPA_PELNY,'False','True','','','','','',''])
+            
+print(f'Processed {line_count} lines from constant data input')
+print(f'No. of corrent entries {len(dane_input)} lines.')
+   
 
-print(f'No. of pracownicy = {pracownicy - 10}')
+print(f'No. of pracownicy = {pracownicy - 100}')
 print(f'No. of full access  = {dostep_pelny}')
+print(f'No. of rusznikarnia access  = {dostep_rozszezony}')
 print(f'No. of 15m access = {dostep_prowadzacy}')
 print(f'No. of normal access = {dostep_klubowicz}')
 
